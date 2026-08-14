@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0a0e17"
+    >
+
+    <meta
+        name="description"
+        content="ARES OS — Personal Operating System"
+    >
+
+    <title>ARES OS — Home</title>
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- ============================================
+         ARES OS — Application Shell
+         ============================================ -->
+
+    <div id="app">
+
+        <!-- TOP HEADER -->
+        <header class="app-header">
+            <div class="header-brand">
+                <div class="brand-mark">A</div>
+
+                <div class="brand-text">
+                    <div class="brand-name">ARES OS</div>
+                    <div class="brand-subtitle">Personal Operating System</div>
+                </div>
+            </div>
+
+            <button
+                id="theme-toggle"
+                class="icon-button"
+                type="button"
+                aria-label="Toggle theme"
+                title="Toggle theme"
+            >
+                ◐
+            </button>
+        </header>
+
+
+        <!-- MAIN CONTENT -->
+        <main id="main-content" class="main-content">
+
+            <!-- Dynamic views are rendered here -->
+            <div id="view-container"></div>
+
+        </main>
+
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav
+            id="bottom-nav"
+            class="bottom-nav"
+            aria-label="Main navigation"
+        >
+
+            <button
+                class="nav-item active"
+                data-view="dashboard"
+                type="button"
+                aria-label="Home"
+                aria-current="page"
+            >
+                <span class="nav-icon">⌂</span>
+                <span class="nav-label">Home</span>
+            </button>
+
+            <button
+                class="nav-item"
+                data-view="tasks"
+                type="button"
+                aria-label="Tasks"
+            >
+                <span class="nav-icon">✓</span>
+                <span class="nav-label">Tasks</span>
+            </button>
+
+            <button
+                class="nav-item"
+                data-view="focus"
+                type="button"
+                aria-label="Focus"
+            >
+                <span class="nav-icon">◷</span>
+                <span class="nav-label">Focus</span>
+            </button>
+
+            <button
+                class="nav-item"
+                data-view="notes"
+                type="button"
+                aria-label="Notes"
+            >
+                <span class="nav-icon">▤</span>
+                <span class="nav-label">Notes</span>
+            </button>
+
+            <button
+                class="nav-item"
+                data-view="more"
+                type="button"
+                aria-label="More"
+            >
+                <span class="nav-icon">•••</span>
+                <span class="nav-label">More</span>
+            </button>
+
+        </nav>
+
+
+        <!-- MODAL CONTAINER -->
+        <div id="modal-container"></div>
+
+        <!-- TOASTS ARE CREATED DYNAMICALLY -->
+
+    </div>
+
+
+    <!-- ============================================
+         JAVASCRIPT MODULES
+         Order matters.
+         ============================================ -->
+
+    <!-- 1. Utility functions -->
+    <script src="js/utils.js"></script>
+
+    <!-- 2. Central state store -->
+    <script src="js/store.js"></script>
+
+    <!-- 3. Router -->
+    <script src="js/router.js"></script>
+
+    <!-- 4. Task manager -->
+    <script src="js/tasks.js"></script>
+
+    <!-- Application bootstrap -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Apply saved theme
+            if (window.AresStore && window.AresUtils) {
+                const settings = AresStore.getSettings();
+
+                if (settings && settings.theme) {
+                    AresUtils.applyTheme(settings.theme);
+                }
+            }
+
+            // Theme toggle
+            const themeToggle = document.getElementById('theme-toggle');
+
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function () {
+
+                    const currentTheme =
+                        AresStore.getSettings().theme || 'dark';
+
+                    const newTheme =
+                        currentTheme === 'dark' ? 'light' : 'dark';
+
+                    AresStore.setTheme(newTheme);
+                });
+            }
+
+            // Start router
+            if (window.AresRouter) {
+                AresRouter.init();
+            }
+
+        });
+    </script>
+
+</body>
+</html>
